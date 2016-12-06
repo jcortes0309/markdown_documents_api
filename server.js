@@ -7,9 +7,9 @@ app.use(bodyParser.json());
 
 app.set("view engine", "hbs");
 
-app.put("/documents/:filepath", function(request, response) {
-  let filepath = "./data/" + request.params.filepath;
-  let contents = request.body.contents
+app.put("/documents/:filename", function(request, response) {
+  let filepath = "./data/" + request.params.filename;
+  let contents = request.body.contents;
   console.log(contents);
   fs.writeFile(filepath, contents, function(error) {
     if (error) {
@@ -25,24 +25,22 @@ app.put("/documents/:filepath", function(request, response) {
   });
 });
 
-app.get("/documents/:filepath", function(request, response) {
-  let filepath = "./data/" + request.params.filepath;
-  if (fs.existsSync(filepath)) {
-    fs.readFile(filepath, function(error, content) {
+app.get("/documents/:filename", function(request, response) {
+  let filename = request.params.filename;
+  fs.readFile("./data/" + filename, function(error, contents) {
     if (error) {
-      console.log("\nSorry, there is no such file or directory: ");
-      console.log(error.message, "\n");
-      return;
+      response.status(500);
+      response.json({
+        message: "Couldn't not read file because: " + error.message
+      });
+    } else {
+      response.json({
+        filename: filename,
+        contents: contents.toString()
+      });
     }
-    var fileContent = content.toString();
-    console.log("The fileContent is: ", fileContent);
-    });
-  } else {
-    console.log("Boooo.  The file doesn't exist :( ");
-  }
-  // console.log("The file name is: ", filepath);
+  });
 });
-
 
 
 
