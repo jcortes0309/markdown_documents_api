@@ -4,7 +4,7 @@ You are making an API for storing markdown documents and rendering the documents
 
 ## PUT /documents/:filepath
 
-Sending a PUT request to the ```/documents/:filepath``` URL will cause it to be saved in the ```data``` subdirectory within your application. The file path will be taking from the route parameter. The body of the request will be an object in JSON format, with the property ```contents```. Example: ```PUT /documents/how-to-write-an-express-app.md``` with the body of:
+Sending a PUT request to the ```/documents/:filepath``` URL will cause it to be saved in the ```data``` subdirectory within your application. The file path will be taken from the route parameter. The body of the request will be an object in JSON format, with the property ```contents```. Example: ```PUT /documents/how-to-write-an-express-app.md``` with the body of:
 
 ```
 {
