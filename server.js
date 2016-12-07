@@ -72,6 +72,17 @@ app.get("/documents", function(request, response) {
   });
 });
 
+app.delete('/documents/:filename', function(request, response) {
+  var filename = request.params.filename;
+  fs.unlink('./data/' + filename, function(err) {
+    if (err) {
+      response.status(500);
+      response.json({ error: err.message });
+    } else {
+      response.json({ status: 'ok' });
+    }
+  });
+});
 
 
 
