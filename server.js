@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const marked = require("marked")
 const fs = require("fs");
 
 const app = express();
@@ -15,7 +16,7 @@ app.put("/documents/:filename", function(request, response) {
     if (error) {
       request.status(500);
       response.json({
-        message: "Couldn't save file because: " + err.message
+        message: "Couldn't save the file because: " + err.message
       });
     } else {
       response.json({
@@ -31,12 +32,32 @@ app.get("/documents/:filename", function(request, response) {
     if (error) {
       response.status(500);
       response.json({
-        message: "Couldn't not read file because: " + error.message
+        message: "Couldn't read file because: " + error.message
       });
     } else {
       response.json({
         filename: filename,
         contents: contents.toString()
+      });
+    }
+  });
+});
+
+app.get("/documents/:filename/display", function(request, response) {
+  let filename = request.params.filename;
+  fs.readFile("./data/" + filename, function(error, contents) {
+    if (error) {
+      response.status(500);
+      response.json({
+        message: "Couldn't read the file because: " + error.message
+      });
+    } else {
+      fileContent = contents.toString();
+      fileContent = marked(fileContent);
+      console.log(fileContent);
+      response.render("display.hbs", {
+        title: filename,
+        contents: fileContent
       });
     }
   });
