@@ -63,6 +63,15 @@ app.get("/documents/:filename/display", function(request, response) {
   });
 });
 
+app.get("/documents", function(request, response) {
+  let filepath = "./data/";
+  fs.readdir(filepath, function(error, files) {
+    response.json({
+      files: files
+    });
+  });
+});
+
 
 
 
